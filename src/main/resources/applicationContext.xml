@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+    <!--<bean id="PokerCard" class="com.github.jessealva.poker.impl.PokerCard">-->
+        <!--<constructor-arg name="s" value="HEART" type="com.github.jessealva.poker.impl.PokerCard.SUIT"/>-->
+        <!--<constructor-arg name="v" value="ACE" type="com.github.jessealva.poker.impl.PokerCard.VALUE"/>-->
+    <!--</bean>-->
+    <bean id="PokerDealer" class="com.github.jessealva.poker.impl.PokerDealer">
+        <constructor-arg ref="PokerDeck"/>
+        <constructor-arg ref="PokerRules"/>
+    </bean>
+    <bean id="PokerDeck" class="com.github.jessealva.poker.impl.PokerDeck" factory-method="instance"></bean>
+    <bean id="PokerHand" class="com.github.jessealva.poker.impl.PokerHand">
+        <constructor-arg value="5"/>
+    </bean>
+    <bean id="PokerRules" class="com.github.jessealva.poker.impl.PokerRules"></bean>
+</beans>
