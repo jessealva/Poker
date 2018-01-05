@@ -9,6 +9,6 @@ public interface Dealer {
     public void dealCards();
     public void askForDiscards();
     public void dealLastRound();
-    public Hand determineWinner();
+    public Hand[] determineWinner();
     public String winningHand(Hand hand);
 }

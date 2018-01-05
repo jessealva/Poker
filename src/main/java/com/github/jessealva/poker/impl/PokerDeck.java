@@ -5,6 +5,8 @@ import com.github.jessealva.poker.interfac.Deck;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.Random;
 
 /**
@@ -18,7 +20,10 @@ public class PokerDeck implements Deck{
     private int deckIdx = cards.length -1;
 
 
-    private PokerDeck() {
+    private PokerDeck() {}
+
+    @PostConstruct
+    public void initPokerDeck() {
         PokerCard.SUIT[] s = PokerCard.SUIT.values();
         PokerCard.VALUE[] v = PokerCard.VALUE.values();
         int idx = 0;
@@ -27,6 +32,12 @@ public class PokerDeck implements Deck{
                 cards[idx++] = new PokerCard(s[j], v[k]);
             }
         }
+    }
+
+    @PreDestroy
+    public void clearDeck() {
+        cards = null;
+        deck = null;
     }
 
     public static Deck instance() {

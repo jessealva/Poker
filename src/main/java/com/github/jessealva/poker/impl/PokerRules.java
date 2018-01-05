@@ -54,7 +54,7 @@ public class PokerRules implements Rules {
      * high card
      *
      */
-    public Hand findWinningHand(Hand[] hands) {
+    public Hand[] findWinningHand(Hand[] hands) {
         //WinningHands[] wh = new WinningHands[hands.length];
         Map<Hand, WinningHands> results = new HashMap<>(hands.length);
         for(int i = 0 ; i < hands.length ; ++i) {
@@ -69,7 +69,47 @@ public class PokerRules implements Rules {
                 wHands.add(key);
             }
         }
-        return wHands.get(0);
+        return getHigherHand(wHands, highest);
+    }
+
+    private Hand[] getHigherHand(List<Hand> hands, WinningHands type) {
+        List<Hand> winners = new ArrayList<>();
+        if(hands.size() == 1) {
+            return hands.toArray(new Hand[]{});
+        }
+        switch (type) {
+            case SFLUSH:
+            case FLUSH:
+            case STRAIGHT:
+            case HIGH_CARD:
+                //All the previous have the same determinations, the highest card in the hand where all have the same kind
+                //of hand, wins, or ties.
+                //Lets first determine the high card.
+                Card highCard = WinningHands.getHighCard(hands.get(0));
+                for(int i = 0 ; i < hands.size(); ++i) {
+                    Card myHighCard = WinningHands.getHighCard(hands.get(i));
+                    if(myHighCard.compare(highCard) > 0) {
+                        highCard = myHighCard;
+                    }
+                }
+                for(Hand h : hands) {
+                    if(WinningHands.getHighCard(h).compare(highCard) == 0 ) {
+                        winners.add(h);
+                    }
+                }
+
+                break;
+            case FULL_HOUSE:
+            case TWO_PAIR:
+            case FOUR_OF_A_KIND:
+            case THREE_OF_A_KIND:
+            case ONE_PAIR:
+                //For these two, if the high card is the same, then who ever has the highest secondary card is the winner, or tied.
+                winners = hands;
+                break;
+        }
+        //winner = hands.get(0);
+        return winners.toArray(new Hand[]{});
     }
 
     @Override

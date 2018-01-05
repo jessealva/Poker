@@ -8,6 +8,8 @@ import com.github.jessealva.poker.interfac.Rules;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 
+import javax.annotation.PostConstruct;
+
 /**
  * Created by jesusalva on 12/26/17.
  */
@@ -27,9 +29,9 @@ public class PokerDealer implements Dealer {
         for(int i = 0 ; i < hands ; ++i) {
             this.hands[i] = new PokerHand(HAND_SIZE);
         }
-        shuffle();
     }
 
+    @PostConstruct
     public void shuffle() {
         deck.shuffle();
     }
@@ -79,10 +81,10 @@ public class PokerDealer implements Dealer {
         printHands();
     }
 
-    public Hand determineWinner() {
+    public Hand[] determineWinner() {
         System.out.println("Determining Winner:");
 
-        Hand winner = rules.findWinningHand(hands);//hands[0];
+        Hand[] winner = rules.findWinningHand(hands);//hands[0];
         printHands();
         return winner;
     }
@@ -93,7 +95,8 @@ public class PokerDealer implements Dealer {
         d.dealCards();
         d.askForDiscards();
         d.dealLastRound();
-        Hand winner = d.determineWinner();
+        Hand[] winner = d.determineWinner();
+
         System.out.println("WInner is: " + winner);
     }
 }
